@@ -108,6 +108,9 @@ function(fl_create_example NAME SOURCES LIBRARIES)
 
   set_target_properties   (${TARGET_NAME} PROPERTIES OUTPUT_NAME ${NAME})
   target_link_libraries   (${TARGET_NAME} PRIVATE ${LIBRARIES})
+  if(EMSCRIPTEN)
+    set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX .html LINK_FLAGS "-s WASM=1 -sALLOW_MEMORY_GROWTH -sASYNCIFY -sOFFSCREENCANVAS_SUPPORT=1 --bind --shell-file ${CMAKE_CURRENT_LIST_DIR}/shell_minimal.html")
+  endif()
 
   # make sure we're "exporting" global symbols like 'fl_disable_wayland',
   # see also README.Wayland.txt and CMake policy CMP0065.

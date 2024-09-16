@@ -373,7 +373,7 @@ elseif(APPLE)
     drivers/Quartz/Fl_Quartz_Image_Surface_Driver.H
   )
 
-else()
+elseif(WIN32)
 
   # Windows (GDI)
 
@@ -407,6 +407,31 @@ else()
     drivers/GDI/Fl_GDI_Copy_Surface_Driver.H
     drivers/GDI/Fl_GDI_Image_Surface_Driver.H
   )
+
+elseif(EMSCRIPTEN)
+  # emscripten
+    set(DRIVER_HEADER_FILES
+      drivers/Emscripten/Fl_Emscripten_Graphics_Driver.H       
+      drivers/Emscripten/Fl_Emscripten_System_Driver.H
+      drivers/Emscripten/Fl_Emscripten_Image_Surface_Driver.H  
+      drivers/Emscripten/Fl_Emscripten_Window_Driver.H
+      drivers/Emscripten/Fl_Emscripten_Screen_Driver.H
+      drivers/Emscripten/Fl_Emscripten_Copy_Surface_Driver.H   
+    )
+    set(DRIVER_FILES
+      drivers/Emscripten/Fl_Emscripten_Graphics_Driver.cxx       
+      drivers/Emscripten/Fl_Emscripten_System_Driver.cxx
+      drivers/Emscripten/Fl_Emscripten_Image_Surface_Driver.cxx  
+      drivers/Emscripten/Fl_Emscripten_Window_Driver.cxx
+      drivers/Emscripten/Fl_Emscripten_Screen_Driver.cxx   
+      drivers/Emscripten/Fl_Emscripten_Printer_Driver.cxx 
+      drivers/Emscripten/Fl_Emscripten_Copy_Surface_Driver.cxx     
+      drivers/Emscripten/Fl_Emscripten_Native_File_Chooser.cxx 
+      drivers/Emscripten/fl_Emscripten_platform_init.cxx
+      Fl_Native_File_Chooser_FLTK.cxx
+      drivers/PostScript/Fl_PostScript.cxx
+      drivers/PostScript/Fl_PostScript_image.cxx
+    )
 
 endif(FLTK_USE_X11 AND NOT FLTK_BACKEND_WAYLAND)
 
@@ -807,6 +832,9 @@ list(REMOVE_DUPLICATES OPTIONAL_INCLUDES)
 #######################################################################
 
 fl_add_library(fltk STATIC "${STATIC_FILES}")
+if (EMSCRIPTEN)
+  target_compile_definitions(fltk PRIVATE U32=unsigned)
+endif()
 target_link_libraries(fltk PRIVATE ${OPTIONAL_LIBS})
 target_include_directories(fltk PRIVATE ${OPTIONAL_INCLUDES})
 
