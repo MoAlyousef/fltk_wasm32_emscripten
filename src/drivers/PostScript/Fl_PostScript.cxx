@@ -1470,7 +1470,7 @@ void Fl_PostScript_Graphics_Driver::ps_untranslate(void)
   fprintf(output, "GR GR\n");
 }
 
-#if defined(FLTK_USE_X11) || defined(FLTK_USE_WAYLAND)
+#if defined(FLTK_USE_X11) || defined(FLTK_USE_WAYLAND) || defined(__EMSCRIPTEN__)
 
 Fl_Paged_Device *Fl_PDF_File_Surface::new_platform_pdf_surface_(const char ***pfname) {
   *pfname = NULL;
