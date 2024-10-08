@@ -139,6 +139,10 @@ static bool handle_mouse_ev(int eventType, const EmscriptenMouseEvent *event, vo
       state |= FL_BUTTON2;
     if (event->button == 2)
       state |= FL_BUTTON3;
+    if (event->button == 3)
+      state |= FL_BUTTON4;
+    if (event->button == 4)
+      state |= FL_BUTTON5;
     Fl::e_keysym = FL_Button + event->button + 1;
   } else if (flev == FL_RELEASE) {
     if (abs(Fl::e_x_root - px) > 5 || abs(Fl::e_y_root - py) > 5)
@@ -149,6 +153,10 @@ static bool handle_mouse_ev(int eventType, const EmscriptenMouseEvent *event, vo
       state &= ~FL_BUTTON2;
     if (event->button == 2)
       state &= ~FL_BUTTON3;
+    if (event->button == 3)
+      state &= ~FL_BUTTON4;
+    if (event->button == 4)
+      state &= ~FL_BUTTON5;
     Fl::e_keysym = FL_Button + event->button + 1;
   }
   Fl::e_state = state;
