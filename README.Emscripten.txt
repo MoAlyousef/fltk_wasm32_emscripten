@@ -30,7 +30,7 @@ The drawing is done using canvas 2d context calls. Windows are enclosed in a DIV
 Emscripten provides a CMake wrapper called emcmake, and alternatively a CMake toolchain file. Either can be used to configure FLTK.
 
 Using emcmake:
-emcmake cmake -Bbin -GNinja -DCMAKE_BUILD_TYPE=Release -DFLTK_BUILD_TEST=OFF -DFLTK_USE_PTHREADS=OFF -DFLTK_BUILD_FLUID=OFF -DFLTK_BUILD_FLTK_OPTIONS=OFF
+emcmake cmake -Bbin -GNinja -DCMAKE_BUILD_TYPE=Release -DFLTK_BUILD_TEST=OFF -DFLTK_USE_PTHREADS=OFF -DFLTK_BUILD_FLUID=OFF -DFLTK_BUILD_FLTK_OPTIONS=OFF -DFLTK_BACKEND_WAYLAND=OFF -DFLTK_BACKEND_X11=OFF
 
 Using the toolchain file:
 cmake -Bbin -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DFLTK_BUILD_TEST=OFF -DFLTK_USE_PTHREADS=OFF -DFLTK_BUILD_FLUID=OFF -DFLTK_BUILD_FLTK_OPTIONS=OFF
