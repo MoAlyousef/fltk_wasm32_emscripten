@@ -61,7 +61,7 @@ static int special_key(const char *k) {
 }
 
 static void set_keysym_and_state(const EmscriptenKeyboardEvent *keyEvent) {
-  ulong state = Fl::e_state & 0xff0000;
+  ulong state = 0;
   if (special_key(keyEvent->key) >= 0) {
     Fl::e_keysym = special_keys_equiv[special_key(keyEvent->key)];
     Fl::e_length = 0;
