@@ -40,7 +40,7 @@ const char *special_keys[] = {"Backspace",     "Tab",     "IsoKey",    "Enter", 
                               "Insert",        "Menu",    "Help",      "NumLock",  "KP",
                               "KPEnter",       "KPLast",  "F",         "FLast",    "Shift",
                               "Shift",         "Control", "Control",   "CapsLock", "Meta",
-                              "Meta",          "Alt",     "Alt",       "Delete",   "AltGr"};
+                              "Meta",          "Alt",     "Alt",       "Delete",   "AltGr", "AltGraph"};
 
 int special_keys_equiv[] = {FL_BackSpace,      FL_Tab,       FL_Iso_Key,   FL_Enter,     FL_Pause,
                             FL_Scroll_Lock,    FL_Escape,    FL_Kana,      FL_Eisu,      FL_Yen,
@@ -49,12 +49,12 @@ int special_keys_equiv[] = {FL_BackSpace,      FL_Tab,       FL_Iso_Key,   FL_En
                             FL_Insert,         FL_Menu,      FL_Help,      FL_Num_Lock,  FL_KP,
                             FL_KP_Enter,       FL_KP_Last,   FL_F,         FL_F_Last,    FL_Shift_L,
                             FL_Shift_R,        FL_Control_L, FL_Control_R, FL_Caps_Lock, FL_Meta_L,
-                            FL_Meta_R,         FL_Alt_L,     FL_Alt_R,     FL_Delete,    FL_Alt_Gr};
+                            FL_Meta_R,         FL_Alt_L,     FL_Alt_R,     FL_Delete,    FL_Alt_Gr, FL_Alt_Gr};
 
-static int special_key(const char *k) {
+static int special_key(const char *k, bool right) {
   for (int i = 0; i < sizeof(special_keys) / sizeof(special_keys[0]); i++) {
     if (!strcmp(special_keys[i], k)) {
-      return i;
+      return i + (right ? 1: 0);
     }
   }
   return -1;
@@ -62,8 +62,9 @@ static int special_key(const char *k) {
 
 static void set_keysym_and_state(const EmscriptenKeyboardEvent *keyEvent) {
   ulong state = 0;
-  if (special_key(keyEvent->key) >= 0) {
-    Fl::e_keysym = special_keys_equiv[special_key(keyEvent->key)];
+  int temp = special_key(keyEvent->key, keyEvent->location == 2);
+  if (temp >= 0) {
+    Fl::e_keysym = special_keys_equiv[temp];
     Fl::e_length = 0;
     Fl::e_text = (char *)"";
   } else {
@@ -81,6 +82,7 @@ static void set_keysym_and_state(const EmscriptenKeyboardEvent *keyEvent) {
     state |= FL_META;
   Fl::e_state = state;
 }
+
 
 static int match_mouse_event(int eventType) {
   switch (eventType) {
