@@ -21,11 +21,17 @@ Fl_Emscripten_System_Driver::Fl_Emscripten_System_Driver()
   : Fl_System_Driver() {}
 
 double Fl_Emscripten_System_Driver::wait(double v) {
+  static unsigned int wait_depth = 0;
+  wait_depth++;
+
   double ret = Fl_System_Driver::wait(v);
-  // This is problematic in that it doesn't support reentrancy.
-  // It's currently needed for dialogs and menu windows.
-  emscripten_sleep(0);
-  Fl::flush();
+
+  if (wait_depth == 1) {
+    emscripten_sleep(0);
+    Fl::flush();
+  }
+
+  wait_depth--;
   return ret;
 }
 

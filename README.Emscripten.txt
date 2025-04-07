@@ -44,13 +44,15 @@ An example of setting these properties for your project:
 ```
 if(EMSCRIPTEN)
     add_executable(index main.cpp)
-    target_link_librareis(index PRIVATE fltk::fltk)
-    set_target_properties(index PROPERTIES SUFFIX .html LINK_FLAGS "-s WASM=1 -sALLOW_MEMORY_GROWTH -sASYNCIFY -sOFFSCREENCANVAS_SUPPORT=1 --bind --shell-file ${CMAKE_CURRENT_LIST_DIR}/shell_minimal.html")
+    target_link_libraries(index PRIVATE fltk::fltk embind)
+    set_target_properties(index PROPERTIES SUFFIX .html LINK_FLAGS "-s WASM=1 -sALLOW_MEMORY_GROWTH -sASYNCIFY -sOFFSCREENCANVAS_SUPPORT=1 -sSINGLE_FILE --shell-file ${CMAKE_CURRENT_LIST_DIR}/shell_minimal.html")
 else()
     add_executable(MyApplication main.cpp)
-    target_link_librareis(MyApplication PRIVATE fltk::fltk)
+    target_link_libraries(MyApplication PRIVATE fltk::fltk)
 endif()
 ```
+
+The SINGLE_FILE shell argument allows building your app into a single html file. This is useful during development, since it doesn't require running a server.
 
 Notice how our binary name is set to index, this is optional however it allows running the binary by simply accessing the root '/' of our site.
 We also tell the Emscripten toolchain to use a shell html file which we call shell_minimal.html and place in our CMakeLists.txt directory.
